@@ -145,7 +145,104 @@ h1 span {
   from { transform: scaleY(.25); opacity: .35; }
   to { transform: scaleY(1); opacity: 1; }
 }
-.signal {
+.life-scanner {
+  display: none;
+  position: relative;
+  width: min(320px, 100%);
+  aspect-ratio: 1;
+  margin: 28px auto;
+  overflow: hidden;
+  border: 1px solid #66f6ff45;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #66f6ff12 1px, transparent 2px),
+    radial-gradient(circle, #06141b 0%, #03080d 75%);
+  box-shadow: 0 0 35px #66f6ff12,
+              inset 0 0 35px #66f6ff10;
+}
+
+.life-scanner.active {
+  display: block;
+}
+
+.scanner-ring {
+  position: absolute;
+  inset: 15%;
+  border: 1px solid #66f6ff35;
+  border-radius: 50%;
+}
+
+.ring-2 { inset: 30%; }
+.ring-3 { inset: 45%; }
+
+.scanner-sweep {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 300deg,
+    #66f6ff05 320deg,
+    #66f6ff45 355deg,
+    transparent 360deg
+  );
+  animation: radarSpin 4s linear infinite;
+}
+
+@keyframes radarSpin {
+  to { transform: rotate(360deg); }
+}
+
+.scanner-center {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  top: calc(50% - 3px);
+  left: calc(50% - 3px);
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--cyan);
+}
+
+.life-point {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--cyan);
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+.life-point span {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan), 0 0 18px #66f6ff90;
+  animation: vitalPulse 1.2s ease-in-out infinite;
+}
+
+.point-1 { top: 25%; left: 52%; }
+.point-2 { top: 58%; left: 20%; }
+.point-3 { top: 68%; left: 57%; }
+
+@keyframes vitalPulse {
+  0%, 100% { opacity: .45; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.35); }
+}
+
+.scanner-label {
+  position: absolute;
+  bottom: 12%;
+  width: 100%;
+  text-align: center;
+  color: #66f6ff90;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+  .signal {
   text-align: center;
   font-family: Orbitron, sans-serif;
   font-size: clamp(15px, 3vw, 24px);
@@ -264,7 +361,32 @@ footer {
     </div>
 
     <div class="wave" id="wave"></div>
+<div class="life-scanner" id="lifeScanner">
+  <div class="scanner-ring ring-1"></div>
+  <div class="scanner-ring ring-2"></div>
+  <div class="scanner-ring ring-3"></div>
 
+  <div class="scanner-sweep"></div>
+
+  <div class="scanner-center"></div>
+
+  <div class="life-point point-1">
+    <span></span>
+    <small>VITAL 01</small>
+  </div>
+
+  <div class="life-point point-2">
+    <span></span>
+    <small>VITAL 02</small>
+  </div>
+
+  <div class="life-point point-3">
+    <span></span>
+    <small>VITAL 03</small>
+  </div>
+
+  <div class="scanner-label">LIFEFORM SCAN // ZERO-09</div>
+</div>
     <div class="signal" id="signal">
       SIGNAL DETECTED
       <small>A AGUARDAR AUTORIZAÇÃO DO OPERADOR</small>
@@ -342,7 +464,8 @@ function scanSignal() {
     writeLog("> <b>ORIGEM CONFIRMADA.</b>\n> Estação ZERO-09. Último contacto: 27 anos atrás.\n> AVISO: o sinal contém uma resposta dirigida a ti.");
  } else {
   document.getElementById("origin").textContent = "3 DETECTED";
-  document.getElementById("integrity").textContent = "LIFE SIGNS";
+  document.getElementById("lifeScanner").classList.add("active");
+    document.getElementById("integrity").textContent = "LIFE SIGNS";
   document.getElementById("files").textContent = "03 / 03";
 
   signal.innerHTML = '3 LIFE SIGNS DETECTED<small>CREW STATUS: UNKNOWN // SIGNALS ACTIVE</small>';
