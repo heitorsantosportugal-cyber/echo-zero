@@ -351,30 +351,6 @@ function playEchoVoice() {
     console.error("Transmission playback failed:", error);
   });
 }
-
-  window.speechSynthesis.cancel();
-
-  const message = new SpeechSynthesisUtterance(
-    "If you are reading this... we never left."
-  );
-
-  message.lang = "en-US";
-  message.rate = 0.78;
-  message.pitch = 0.82;
-  message.volume = 1;
-
-  const voices = window.speechSynthesis.getVoices();
-  const englishVoice = voices.find(voice =>
-    voice.lang.toLowerCase().startsWith("en") &&
-    /natural|premium|google|microsoft/i.test(voice.name)
-  );
-
-  if (englishVoice) {
-    message.voice = englishVoice;
-  }
-
-  window.speechSynthesis.speak(message);
-}
 </script>
 </body>
 </html>
