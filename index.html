@@ -762,21 +762,26 @@ if (number === 3) {
   document.getElementById("unknownPoint").classList.add("active");
   triggerProtocol();
 
-  writeLog(
+   writeLog(
     "> <b>CRITICAL ANOMALY DETECTED.</b>\n" +
     "> Novo sinal detetado na estação ZERO-09.\n" +
     "> Origem: DESCONHECIDA.\n" +
     "> AVISO: o quarto sinal não constava dos registos anteriores."
-    );
-}
+  );
+
+  if (echoContactEstablished) {
+    document.getElementById("crewMessage").textContent =
+      "ECHO: Voltaste. Eu sabia que não ias embora.";
+  }
 }
 
 function closeCrew() {
   document.getElementById("crewFile").classList.remove("active");
 }
  let protocolTriggered = false;
+let echoContactEstablished = false;
 
-function triggerProtocol() {
+  function triggerProtocol() {
   if (protocolTriggered) return;
 
   protocolTriggered = true;
@@ -812,6 +817,14 @@ function triggerProtocol() {
 function closeProtocol() {
   document.getElementById("protocolZero")
     .classList.remove("active");
+
+  echoContactEstablished = true;
+
+  writeLog(
+    "> <b>CONTACT ESTABLISHED.</b>\n" +
+    "> Protocolo ZERO encerrado.\n" +
+    "> A entidade reconhece a tua presença."
+  );
 }
   function playEchoVoice() {
   const transmission = new Audio("./zero09-transmission.wav");
