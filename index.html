@@ -785,7 +785,8 @@ function closeCrew() {
 }
  let protocolTriggered = false;
 let echoContactEstablished = false;
-
+let entityResponseTriggered = false;
+ 
   function triggerProtocol() {
   if (protocolTriggered) return;
 
@@ -830,6 +831,34 @@ function closeProtocol() {
     "> Protocolo ZERO encerrado.\n" +
     "> A entidade reconhece a tua presença."
   );
+}
+ function triggerEntityResponse() {
+  if (entityResponseTriggered) return;
+
+  entityResponseTriggered = true;
+
+  const signal = document.getElementById("signal");
+  const integrity = document.getElementById("integrity");
+
+  writeLog(
+    "> <b>UNAUTHORIZED TRANSMISSION.</b>\n" +
+    "> O terminal está a receber dados externos.\n" +
+    "> Origem: ZERO-09.\n" +
+    "> AVISO: a entidade está a alterar os registos."
+  );
+
+  integrity.textContent = "SIGNAL CORRUPTED";
+
+  signal.innerHTML =
+    'YOU ARE NOT THE FIRST.<small>UNKNOWN TRANSMISSION // FRAGMENT 04</small>';
+
+  setTimeout(() => {
+    writeLog(
+      "> <b>ENTITY RESPONSE DETECTED.</b>\n" +
+      "> Mensagem recuperada: YOU ARE NOT THE FIRST.\n" +
+      "> AVISO: existem registos anteriores ao teu acesso."
+    );
+  }, 2500);
 }
   function playEchoVoice() {
   const transmission = new Audio("./zero09-transmission.wav");
