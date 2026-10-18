@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ECHO//ZERO — Signal Lost</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;500;700;900&display=swap');
+
+:root {
+  --cyan: #66f6ff;
+  --amber: #ffbd69;
+  --bg: #05090d;
+  --muted: #607680;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: #e5faff;
+  font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: .12;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, #8ffaff 4px);
+}
+.grid {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(#66f6ff09 1px, transparent 1px),
+  linear-gradient(90deg, #66f6ff09 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(transparent, black 25%, black 80%, transparent);
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 23px 6%;
+  border-bottom: 1px solid #66f6ff25;
+}
+.brand {
+  font-family: Orbitron, sans-serif;
+  letter-spacing: 4px;
+  font-weight: 900;
+}
+.brand span { color: var(--cyan); }
+.status {
+  color: var(--cyan);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: #73ffb0;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #73ffb0;
+  margin-right: 8px;
+}
+main {
+  width: min(1050px, 90%);
+  margin: 0 auto;
+  padding: 65px 0 45px;
+}
+.eyebrow {
+  color: var(--amber);
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+h1 {
+  font-family: Orbitron, sans-serif;
+  font-size: clamp(38px, 8vw, 82px);
+  line-height: 1.08;
+  margin: 20px 0;
+  letter-spacing: -3px;
+}
+h1 span {
+  color: var(--cyan);
+  text-shadow: 0 0 35px #66f6ff45;
+}
+.intro {
+  max-width: 590px;
+  color: #8ba3ad;
+  line-height: 1.9;
+  font-size: 14px;
+}
+.panel {
+  margin-top: 42px;
+  border: 1px solid #66f6ff35;
+  background: linear-gradient(135deg, #0a1920d9, #070b10f2);
+  position: relative;
+  padding: 26px;
+  box-shadow: 0 0 60px #00eaff08, inset 0 0 40px #66f6ff04;
+}
+.panel::before, .panel::after {
+  content: "";
+  position: absolute;
+  width: 35px;
+  height: 3px;
+  background: var(--cyan);
+  top: -1px;
+  left: 25px;
+}
+.panel::after { top: auto; left: auto; bottom: -1px; right: 25px; }
+.panel-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.wave {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 24px 0;
+  overflow: hidden;
+}
+.wave i {
+  display: block;
+  width: 3px;
+  height: var(--h);
+  background: var(--cyan);
+  opacity: .8;
+  box-shadow: 0 0 10px #66f6ff65;
+  animation: pulse 1s ease-in-out infinite alternate;
+  animation-delay: var(--d);
+}
+@keyframes pulse {
+  from { transform: scaleY(.25); opacity: .35; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+.signal {
+  text-align: center;
+  font-family: Orbitron, sans-serif;
+  font-size: clamp(15px, 3vw, 24px);
+  letter-spacing: 3px;
+  color: var(--amber);
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 18px #ffbd6940;
+}
+.signal small {
+  display: block;
+  margin-top: 14px;
+  color: #66828c;
+  font: 10px 'Share Tech Mono', monospace;
+  letter-spacing: 2px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+button {
+  padding: 15px 20px;
+  background: var(--cyan);
+  color: #031014;
+  border: 1px solid var(--cyan);
+  font: 12px 'Share Tech Mono', monospace;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: .2s;
+}
+button:hover {
+  background: transparent;
+  color: var(--cyan);
+  box-shadow: 0 0 24px #66f6ff20;
+}
+button.secondary {
+  background: transparent;
+  color: #a1b8c1;
+  border-color: #34515c;
+}
+button.secondary:hover { border-color: var(--amber); color: var(--amber); }
+#log {
+  color: #8299a2;
+  font-size: 12px;
+  line-height: 2;
+  min-height: 60px;
+  margin-top: 20px;
+  white-space: pre-line;
+}
+#log b { color: var(--cyan); font-weight: normal; }
+.bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 18px;
+}
+.metric {
+  border: 1px solid #263a43;
+  padding: 16px;
+  background: #071016;
+}
+.metric small {
+  display: block;
+  color: #6e8791;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.metric strong {
+  display: block;
+  color: var(--cyan);
+  font: 20px Orbitron, sans-serif;
+  margin-top: 10px;
+}
+footer {
+  padding: 22px 5%;
+  text-align: center;
+  color: #40545c;
+  font-size: 10px;
+  letter-spacing: 2px;
+  border-top: 1px solid #66f6ff18;
+}
+@media(max-width:600px) {
+  header { padding: 18px 5%; }
+  .brand { letter-spacing: 2px; font-size: 13px; }
+  .status { font-size: 9px; }
+  main { padding-top: 45px; }
+  .panel { padding: 17px; }
+  .bottom { grid-template-columns: 1fr; }
+  .panel-top { font-size: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="grid"></div>
+
+<header>
+  <div class="brand">ECHO<span>//</span>ZERO</div>
+  <div class="status"><i class="dot"></i>SYSTEM ONLINE</div>
+</header>
+
+<main>
+  <div class="eyebrow">CLASSIFIED TRANSMISSION // 2097</div>
+  <h1>THE SIGNAL<br><span>WAS NOT</span><br>SUPPOSED TO EXIST.</h1>
+  <p class="intro">
+    Às 03:17 UTC, uma transmissão desconhecida foi detetada
+    numa frequência abandonada. A origem coincide com a
+    estação espacial ZERO-09, desaparecida há 27 anos.
+    Agora, alguém está a tentar contactar-nos.
+  </p>
+
+  <section class="panel">
+    <div class="panel-top">
+      <span>INCOMING TRANSMISSION</span>
+      <span id="frequency">FREQ: 0.000 MHZ</span>
+    </div>
+
+    <div class="wave" id="wave"></div>
+
+    <div class="signal" id="signal">
+      SIGNAL DETECTED
+      <small>A AGUARDAR AUTORIZAÇÃO DO OPERADOR</small>
+    </div>
+
+    <div class="actions">
+      <button onclick="decodeSignal()">[ DESCODIFICAR SINAL ]</button>
+      <button class="secondary" onclick="scanSignal()">[ ANALISAR ORIGEM ]</button>
+    </div>
+
+    <div id="log">> Sistema preparado.
+> À espera da tua decisão, operador.</div>
+  </section>
+
+  <div class="bottom">
+    <div class="metric">
+      <small>ORIGEM</small>
+      <strong id="origin">UNKNOWN</strong>
+    </div>
+    <div class="metric">
+      <small>INTEGRIDADE</small>
+      <strong id="integrity">87.4%</strong>
+    </div>
+    <div class="metric">
+      <small>FICHEIROS</small>
+      <strong id="files">00 / 03</strong>
+    </div>
+  </div>
+</main>
+
+<footer>ECHO//ZERO — RESTRICTED SYSTEM ACCESS — DO NOT TRUST EVERY SIGNAL</footer>
+
+<script>
+const wave = document.getElementById("wave");
+for (let i = 0; i < 95; i++) {
+  const bar = document.createElement("i");
+  bar.style.setProperty("--h", (8 + Math.random() * 80) + "px");
+  bar.style.setProperty("--d", (Math.random() * -1.5) + "s");
+  wave.appendChild(bar);
+}
+
+let decoded = false;
+let scanned = false;
+
+function writeLog(lines) {
+  document.getElementById("log").innerHTML = lines;
+}
+
+function decodeSignal() {
+  const signal = document.getElementById("signal");
+  if (!decoded) {
+    decoded = true;
+    signal.innerHTML = 'IF YOU CAN READ THIS,<br>WE NEVER LEFT.<small>MESSAGE DECRYPTED // FRAGMENT 01</small>';
+    document.getElementById("files").textContent = "01 / 03";
+    document.getElementById("integrity").textContent = "72.1%";
+    writeLog("> <b>DESCRIPTAÇÃO CONCLUÍDA.</b>\n> Mensagem recuperada: \"We never left.\"\n> Um segundo sinal acaba de surgir...");
+  } else {
+    signal.innerHTML = 'WE NEVER LEFT.<small>FRAGMENT 01 // JÁ DESCODIFICADO</small>';
+    writeLog("> Fragmento já recuperado.\n> Analisa a origem para descobrir mais.");
+  }
+}
+
+function scanSignal() {
+  const signal = document.getElementById("signal");
+  if (!scanned) {
+    scanned = true;
+    document.getElementById("frequency").textContent = "FREQ: 14.709 MHZ";
+    document.getElementById("origin").textContent = "ZERO-09";
+    document.getElementById("integrity").textContent = "64.8%";
+    document.getElementById("files").textContent = decoded ? "02 / 03" : "01 / 03";
+    signal.innerHTML = 'ORIGIN: ZERO-09<small>COORDENADAS RECUPERADAS // ACESSO PARCIAL</small>';
+    writeLog("> <b>ORIGEM CONFIRMADA.</b>\n> Estação ZERO-09. Último contacto: 27 anos atrás.\n> AVISO: o sinal contém uma resposta dirigida a ti.");
+  } else {
+    writeLog("> Análise concluída.\n> A estação continua a transmitir.\n> Operador, a decisão seguinte é tua.");
+  }
+}
+</script>
+</body>
+</html>
