@@ -318,6 +318,9 @@ function decodeSignal() {
   if (!decoded) {
     decoded = true;
     signal.innerHTML = 'IF YOU CAN READ THIS,<br>WE NEVER LEFT.<small>MESSAGE DECRYPTED // FRAGMENT 01</small>';
+   
+    playEchoVoice();
+   
     document.getElementById("files").textContent = "01 / 03";
     document.getElementById("integrity").textContent = "72.1%";
     writeLog("> <b>DESCRIPTAÇÃO CONCLUÍDA.</b>\n> Mensagem recuperada: \"We never left.\"\n> Um segundo sinal acaba de surgir...");
