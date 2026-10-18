@@ -726,6 +726,7 @@ function scanSignal() {
   writeLog("> <b>ANOMALIA DETETADA.</b>\n> Foram identificados três sinais vitais.\n> Origem: interior da estação ZERO-09.\n> AVISO: impossível confirmar a identidade da tripulação.");
 }
 }
+
 function openCrew(number) {
   const crew = {
     1: {
@@ -758,31 +759,32 @@ function openCrew(number) {
     person.message;
 
   document.getElementById("crewFile").classList.add("active");
-if (number === 3) {
-  document.getElementById("unknownPoint").classList.add("active");
-  triggerProtocol();
 
-   writeLog(
-    "> <b>CRITICAL ANOMALY DETECTED.</b>\n" +
-    "> Novo sinal detetado na estação ZERO-09.\n" +
-    "> Origem: DESCONHECIDA.\n" +
-    "> AVISO: o quarto sinal não constava dos registos anteriores."
-  );
+  if (number === 3) {
+    document.getElementById("unknownPoint").classList.add("active");
 
-  if (echoContactEstablished) {
-    document.getElementById("crewMessage").textContent =
-      "ECHO: Voltaste. Eu sabia que não ias embora.";
-  
- triggerEntityResponse();
-}
+    writeLog(
+      "> <b>CRITICAL ANOMALY DETECTED.</b>\n" +
+      "> Novo sinal detetado na estação ZERO-09.\n" +
+      "> Origem: DESCONHECIDA.\n" +
+      "> AVISO: o quarto sinal não constava dos registos anteriores."
+    );
+
+    if (echoContactEstablished) {
+      document.getElementById("crewMessage").textContent =
+        "ECHO: Voltaste. Eu sabia que não ias embora.";
+
+      triggerEntityResponse();
+    } else {
+      triggerProtocol();
+    }
+  }
 }
 
 function closeCrew() {
   document.getElementById("crewFile").classList.remove("active");
 }
 
-function closeCrew() {
-  document.getElementById("crewFile").classList.remove("active");
 }
  let protocolTriggered = false;
 let echoContactEstablished = false;
