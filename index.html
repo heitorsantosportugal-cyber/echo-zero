@@ -242,6 +242,79 @@ h1 span {
   font-size: 8px;
   letter-spacing: 1px;
 }
+.crew-file {
+  display: none;
+  width: min(420px, 100%);
+  box-sizing: border-box;
+  margin: 24px auto;
+  padding: 22px;
+  border: 1px solid #66f6ff55;
+  background: linear-gradient(145deg, #07151dcc, #020609f5);
+  box-shadow: 0 0 30px #66f6ff12, inset 0 0 25px #66f6ff08;
+  color: #c8faff;
+  font-family: inherit;
+}
+
+.crew-file.active {
+  display: block;
+  animation: crewReveal .45s ease-out;
+}
+
+.crew-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--cyan);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.crew-file h2 {
+  margin: 24px 0 10px;
+  color: var(--cyan);
+  font-size: 21px;
+  letter-spacing: 2px;
+}
+
+.crew-file p {
+  color: #a8c5cc;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.crew-divider {
+  height: 1px;
+  margin: 18px 0;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+.crew-file button {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--cyan);
+  background: transparent;
+  color: var(--cyan);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.crew-file button:hover {
+  background: #66f6ff15;
+  box-shadow: 0 0 15px #66f6ff20;
+}
+
+@keyframes crewReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   .signal {
   text-align: center;
   font-family: Orbitron, sans-serif;
@@ -370,20 +443,20 @@ footer {
 
   <div class="scanner-center"></div>
 
-  <div class="life-point point-1">
-    <span></span>
-    <small>VITAL 01</small>
-  </div>
+  <div class="life-point point-1" onclick="openCrew(1)">
+  <span></span>
+  <small>VITAL 01</small>
+</div>
 
-  <div class="life-point point-2">
-    <span></span>
-    <small>VITAL 02</small>
-  </div>
+ <div class="life-point point-2" onclick="openCrew(2)">
+  <span></span>
+  <small>VITAL 02</small>
+</div>
 
-  <div class="life-point point-3">
-    <span></span>
-    <small>VITAL 03</small>
-  </div>
+  <div class="life-point point-3" onclick="openCrew(3)">
+  <span></span>
+  <small>VITAL 03</small>
+</div>
 
   <div class="scanner-label">LIFEFORM SCAN // ZERO-09</div>
 </div>
@@ -396,7 +469,24 @@ footer {
       <button onclick="decodeSignal()">[ DESCODIFICAR SINAL ]</button>
       <button class="secondary" onclick="scanSignal()">[ ANALISAR ORIGEM ]</button>
     </div>
+<div class="crew-file" id="crewFile">
+  <div class="crew-header">
+    <span>CLASSIFIED PERSONNEL FILE</span>
+    <span id="crewNumber">CREW 01</span>
+  </div>
 
+  <h2 id="crewName">IDENTIDADE DESCONHECIDA</h2>
+
+  <p id="crewStatus">A recuperar dados biométricos...</p>
+
+  <div class="crew-divider"></div>
+
+  <p id="crewMessage">
+    O ficheiro foi recuperado parcialmente.
+  </p>
+
+  <button onclick="closeCrew()">FECHAR FICHEIRO</button>
+</div>
     <div id="log">> Sistema preparado.
 > À espera da tua decisão, operador.</div>
   </section>
@@ -473,7 +563,44 @@ function scanSignal() {
   writeLog("> <b>ANOMALIA DETETADA.</b>\n> Foram identificados três sinais vitais.\n> Origem: interior da estação ZERO-09.\n> AVISO: impossível confirmar a identidade da tripulação.");
 }
 }
-function playEchoVoice() {
+function openCrew(number) {
+  const crew = {
+    1: {
+      name: "DR. ELIAS VOSS",
+      status: "STATUS: SINAL VITAL ESTÁVEL",
+      message: "Registo recuperado: Dia 1 da missão. A estação está a apresentar anomalias temporais. Se alguém encontrar este ficheiro, não confie nos relógios."
+    },
+    2: {
+      name: "MIRA SOLEN",
+      status: "STATUS: SINAL VITAL ESTÁVEL",
+      message: "Registo recuperado: Já passaram 27 anos na Terra. Aqui dentro, passaram apenas 19 horas. Não sabemos como sair."
+    },
+    3: {
+      name: "IDENTIDADE BLOQUEADA",
+      status: "STATUS: SINAL VITAL DESCONHECIDO",
+      message: "AVISO: este ficheiro foi modificado depois do desaparecimento da estação. Última mensagem: ELE JÁ SABE QUE ESTÁS AQUI."
+    }
+  };
+
+  const person = crew[number];
+  if (!person) return;
+
+  document.getElementById("crewNumber").textContent =
+    "CREW 0" + number;
+  document.getElementById("crewName").textContent =
+    person.name;
+  document.getElementById("crewStatus").textContent =
+    person.status;
+  document.getElementById("crewMessage").textContent =
+    person.message;
+
+  document.getElementById("crewFile").classList.add("active");
+}
+
+function closeCrew() {
+  document.getElementById("crewFile").classList.remove("active");
+}
+  function playEchoVoice() {
   const transmission = new Audio("./zero09-transmission.wav");
   transmission.volume = 1;
   transmission.play().catch(error => {
