@@ -340,9 +340,15 @@ function scanSignal() {
     document.getElementById("files").textContent = decoded ? "02 / 03" : "01 / 03";
     signal.innerHTML = 'ORIGIN: ZERO-09<small>COORDENADAS RECUPERADAS // ACESSO PARCIAL</small>';
     writeLog("> <b>ORIGEM CONFIRMADA.</b>\n> Estação ZERO-09. Último contacto: 27 anos atrás.\n> AVISO: o sinal contém uma resposta dirigida a ti.");
-  } else {
-    writeLog("> Análise concluída.\n> A estação continua a transmitir.\n> Operador, a decisão seguinte é tua.");
-  }
+ } else {
+  document.getElementById("origin").textContent = "3 DETECTED";
+  document.getElementById("integrity").textContent = "LIFE SIGNS";
+  document.getElementById("files").textContent = "03 / 03";
+
+  signal.innerHTML = '3 LIFE SIGNS DETECTED<small>CREW STATUS: UNKNOWN // SIGNALS ACTIVE</small>';
+
+  writeLog("> <b>ANOMALIA DETETADA.</b>\n> Foram identificados três sinais vitais.\n> Origem: interior da estação ZERO-09.\n> AVISO: impossível confirmar a identidade da tripulação.");
+}
 }
 function playEchoVoice() {
   const transmission = new Audio("./zero09-transmission.wav");
