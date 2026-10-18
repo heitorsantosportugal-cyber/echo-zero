@@ -345,10 +345,12 @@ function scanSignal() {
   }
 }
 function playEchoVoice() {
-  if (!("speechSynthesis" in window)) {
-    writeLog("> VOICE MODULE UNAVAILABLE.\n> O teu navegador não suporta voz sintética.");
-    return;
-  }
+  const transmission = new Audio("./zero09-transmission.wav");
+  transmission.volume = 1;
+  transmission.play().catch(error => {
+    console.error("Transmission playback failed:", error);
+  });
+}
 
   window.speechSynthesis.cancel();
 
