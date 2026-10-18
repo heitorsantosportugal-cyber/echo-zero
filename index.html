@@ -407,6 +407,60 @@ footer {
   .bottom { grid-template-columns: 1fr; }
   .panel-top { font-size: 8px; }
 }
+.unknown-point {
+  display: none;
+  position: absolute;
+  top: 40%;
+  left: 70%;
+  align-items: center;
+  gap: 6px;
+  color: #ff5964;
+  font-size: 8px;
+  letter-spacing: 1px;
+  z-index: 5;
+}
+
+.unknown-point.active {
+  display: flex;
+  animation: anomalyReveal .6s ease-out;
+}
+
+.unknown-point span {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #ff2638;
+  box-shadow: 0 0 10px #ff2638, 0 0 25px #ff263880;
+  animation: anomalyPulse .65s ease-in-out infinite;
+}
+
+.unknown-point small {
+  color: #ff5964;
+  text-shadow: 0 0 8px #ff2638;
+}
+
+@keyframes anomalyPulse {
+  0%, 100% {
+    opacity: .4;
+    transform: scale(.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes anomalyReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 </style>
 </head>
 <body>
@@ -456,7 +510,11 @@ footer {
   <div class="life-point point-3" onclick="openCrew(3)">
   <span></span>
   <small>VITAL 03</small>
+<div class="unknown-point" id="unknownPoint">
+  <span></span>
+  <small>UNKNOWN 04</small>
 </div>
+  </div>
 
   <div class="scanner-label">LIFEFORM SCAN // ZERO-09</div>
 </div>
@@ -595,6 +653,15 @@ function openCrew(number) {
     person.message;
 
   document.getElementById("crewFile").classList.add("active");
+if (number === 3) {
+  document.getElementById("unknownPoint").classList.add("active");
+
+  writeLog(
+    "> <b>CRITICAL ANOMALY DETECTED.</b>\n" +
+    "> Novo sinal detetado na estação ZERO-09.\n" +
+    "> Origem: DESCONHECIDA.\n" +
+    "> AVISO: o quarto sinal não constava dos registos anteriores."
+  );
 }
 
 function closeCrew() {
