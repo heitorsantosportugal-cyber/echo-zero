@@ -461,10 +461,115 @@ footer {
     transform: scale(1);
   }
 }
+/* PROTOCOL ZERO — CINEMATIC ALERT */
+
+.protocol-zero {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: rgba(1, 3, 7, 0.96);
+  color: #e8fbff;
+  font-family: inherit;
+  text-align: center;
+}
+
+.protocol-zero.active {
+  display: flex;
+  animation: protocolAppear .5s ease-out;
+}
+
+.protocol-content {
+  width: min(480px, 100%);
+  padding: 28px 20px;
+  box-sizing: border-box;
+  border: 1px solid #ff394b;
+  background: linear-gradient(145deg, #16080d, #030609);
+  box-shadow: 0 0 35px #ff263830,
+              inset 0 0 30px #ff263810;
+}
+
+.protocol-warning {
+  color: #ff394b;
+  font-size: 11px;
+  letter-spacing: 3px;
+  animation: warningPulse 1s infinite;
+}
+
+.protocol-title {
+  margin: 22px 0;
+  font-size: clamp(26px, 7vw, 40px);
+  letter-spacing: 3px;
+  color: #f1fcff;
+}
+
+.protocol-message {
+  color: #ff6975;
+  font-size: 12px;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.protocol-button {
+  margin-top: 24px;
+  padding: 12px 18px;
+  border: 1px solid #ff394b;
+  background: transparent;
+  color: #ff6975;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.protocol-button:hover {
+  background: #ff394b18;
+}
+
+@keyframes protocolAppear {
+  from {
+    opacity: 0;
+    transform: scale(1.025);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes warningPulse {
+  0%, 100% { opacity: .55; }
+  50% { opacity: 1; }
+}
 </style>
 </head>
 <body>
-<div class="grid"></div>
+<div class="protocol-zero" id="protocolZero">
+  <div class="protocol-content">
+    <div class="protocol-warning">
+      ⚠ CRITICAL SYSTEM OVERRIDE ⚠
+    </div>
+
+    <h1 class="protocol-title">PROTOCOL ZERO</h1>
+
+    <p class="protocol-message" id="protocolMessage">
+      UNKNOWN SIGNAL DETECTED<br>
+      CHANNEL 04 // CONNECTION UNSTABLE
+    </p>
+
+    <button
+      class="protocol-button"
+      onclick="closeProtocol()"
+    >
+      RESTORE CONNECTION
+    </button>
+  </div>
+</div>
+  <div class="grid"></div>
 
 <header>
   <div class="brand">ECHO<span>//</span>ZERO</div>
@@ -655,6 +760,7 @@ function openCrew(number) {
   document.getElementById("crewFile").classList.add("active");
 if (number === 3) {
   document.getElementById("unknownPoint").classList.add("active");
+  triggerProtocol();
 
   writeLog(
     "> <b>CRITICAL ANOMALY DETECTED.</b>\n" +
@@ -667,6 +773,45 @@ if (number === 3) {
 
 function closeCrew() {
   document.getElementById("crewFile").classList.remove("active");
+}
+ let protocolTriggered = false;
+
+function triggerProtocol() {
+  if (protocolTriggered) return;
+
+  protocolTriggered = true;
+
+  const panel = document.getElementById("protocolZero");
+  const message = document.getElementById("protocolMessage");
+
+  panel.classList.add("active");
+
+  message.innerHTML =
+    "CRITICAL SYSTEM OVERRIDE<br>" +
+    "UNKNOWN SIGNAL DETECTED";
+
+  setTimeout(() => {
+    message.innerHTML =
+      "TRANSMISSION INTERRUPTED<br>" +
+      "SOMEONE IS ACCESSING THIS TERMINAL...";
+  }, 2500);
+
+  setTimeout(() => {
+    message.innerHTML =
+      "ENTITY RESPONSE DETECTED<br>" +
+      '"YOU SHOULDN\'T HAVE FOUND ME."';
+  }, 5000);
+
+  setTimeout(() => {
+    message.innerHTML =
+      "CONNECTION COMPROMISED<br>" +
+      '"I KNOW YOU ARE HERE."';
+  }, 8000);
+}
+
+function closeProtocol() {
+  document.getElementById("protocolZero")
+    .classList.remove("active");
 }
   function playEchoVoice() {
   const transmission = new Audio("./zero09-transmission.wav");
